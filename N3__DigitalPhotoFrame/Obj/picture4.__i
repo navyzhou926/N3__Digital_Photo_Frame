@@ -1,0 +1,1 @@
+-c --device DARMSTM -g -O0 --apcs=interwork -I.\FWlib\inc -I.\user -I "D:\安装文件\学习\MDK380a\ARM\INC\ST\STM32F10x" -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD -o ".\Obj\picture4.o" --omf_browse ".\Obj\picture4.crf" --depend ".\Obj\picture4.d" "User\picture4.c"
