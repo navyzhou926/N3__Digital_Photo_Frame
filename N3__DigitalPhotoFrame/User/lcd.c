@@ -148,10 +148,10 @@ void LCD_Setup(void)
 	LCD_CtrlLinesConfig();
 	GPIO_ResetBits(GPIOC, GPIO_Pin_1);
 	Delay(0xAFFFFf);
- //   Delay(0x5FFFF);					   
+//    Delay(0x35FFFF);					   
     GPIO_SetBits(GPIOC, GPIO_Pin_1 );	
 	Delay(0xAFFFFf);	 	 
-//	Delay(0x5FFFF);	
+//	Delay(0x35FFFF);	
 	  //************* Start Initial Sequence **********//
 	LCD_WriteReg(0x00E3, 0x3008); // Set u16ernal timing
 	LCD_WriteReg(0x00E7, 0x0012); // Set u16ernal timing
@@ -644,6 +644,7 @@ void LCD_DrawCircle(u8 Xpos, u16 Ypos, u16 Radius)
   }
 }
 
+
 /*******************************************************************************
 * Function Name  : LCD_DrawMonoPict
 * Description    : Displays a monocolor picture.
@@ -960,7 +961,65 @@ void TFT_CLEAR(unsigned int color)
 	for(n=0;n<76800;n++)LCD_WR_Data(color);//ÏÔÊ¾°×É« 
 }
 
+void LCD_DrawCircle1(u8 Xpos, u16 Ypos, u16 Radius,u16 fill)
+{
+  s32  D;/* Decision Variable */
+  u32  CurX;/* Current X Value */
+  u32  CurY;/* Current Y Value */
 
+  D = 3 - (Radius << 1);
+  CurX = 0;
+  CurY = Radius;
+  
+  while (CurX <= CurY)
+  {
+    LCD_SetCursor(Xpos + CurX, Ypos + CurY);
+ 
+      LCD_WriteRAMWord(fill);
+
+ 
+    LCD_SetCursor(Xpos + CurX, Ypos - CurY);
+
+      LCD_WriteRAMWord(fill);
+
+    LCD_SetCursor(Xpos - CurX, Ypos + CurY);
+
+      LCD_WriteRAMWord(fill);
+
+    LCD_SetCursor(Xpos - CurX, Ypos - CurY);
+
+      LCD_WriteRAMWord(fill);
+
+    LCD_SetCursor(Xpos + CurY, Ypos + CurX);
+    
+    
+      LCD_WriteRAMWord(fill);
+
+    LCD_SetCursor(Xpos + CurY, Ypos - CurX);
+
+      LCD_WriteRAMWord(fill);
+  
+
+    LCD_SetCursor(Xpos - CurY, Ypos + CurX);
+
+      LCD_WriteRAMWord(fill);
+
+    LCD_SetCursor(Xpos - CurY, Ypos - CurX);
+
+      LCD_WriteRAMWord(fill);
+
+    if (D < 0)
+    {
+      D += (CurX << 2) + 6;
+    }
+    else
+    {
+      D += ((CurX - CurY) << 2) + 10;
+      CurY--;
+    }
+    CurX++;
+  }
+}
 
 
 /**

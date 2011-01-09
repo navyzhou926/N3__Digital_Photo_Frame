@@ -3,6 +3,7 @@
 #include "stm32f10x_gpio.h"
 #include "math.h"
 #include "lcd.h"
+#include "BaiMing.h"
 #include "ZhouHaiJun.h"
 ////////////////////////////////////////////////////// 	
 
@@ -19,10 +20,14 @@ void WriteByteADS(u8 num);
 void Select_Menu(u8 M_Type,u8 Cnt,u8 En);
 u8 Read_Ads7846(void);
 
+extern void LCD_WriteRAM(unsigned int val);
+extern void LCD_WriteIndex(unsigned int index);
+extern void Delay(vu32 Time);
 extern u16 SPI_Flash_SendByte(u8 byte);
 extern u16 SPI_Flash_ReadByte(u8 a);
 extern void drawbigpoint(unsigned int x,unsigned int y);
 extern int count;
+extern unsigned char const ascii_8x16[];
 
 //画笔颜色
 u16  POINT_COLOR=RED;//默认红色    
@@ -474,12 +479,44 @@ u8 Touch_To_Num(u8 M_Type)
 	}
 	return 0;
 }
-			
+
+void ili9320_SetPoint(u16 x,u16 y,u16 point)
+{
+  LCD_WriteReg(32, y);
+  LCD_WriteReg(33, x);
+  LCD_WriteIndex(34);
+  LCD_WriteRAM(point);  
+}
+
+void ili9320_PutChar(u16 x,u16 y,u8 c,u16 charColor,u16 bkColor)
+{
+  u16 i=0;
+  u16 j=0;
+  u8 tmp_char=0;
+  		
+	for (i=0;i<16;i++)
+	{
+		    tmp_char=ascii_8x16[((c-0x20)*16)+i];
+		    for (j=0;j<8;j++)
+		    {
+		      if ( (tmp_char >> 7-j) & 0x01 == 0x01)
+		        {
+		          ili9320_SetPoint(x+j,y+i,charColor); // 字符颜色
+		        }
+		        else
+		        {
+		          ili9320_SetPoint(x+j,y+i,bkColor); // 背景颜色/
+		        }
+		    }
+	}  
+}			
 
 //触摸屏校准代码
 //得到四个校准参数
 void touch_adjust(void)
 {								 
+	char aa[] = "Touch screen Adjusting...";
+	char bb[] = "OK! Welcome to our world !";
 	u16 pos_temp[4][2];//坐标缓存值
 	u8  cnt=0;	
 	u16 d1,d2;
@@ -490,10 +527,8 @@ void touch_adjust(void)
 	POINT_COLOR=BLUE;
 	BACK_COLOR =WHITE;
 	LCD_Clear(WHITE);
-//	LCD_DisplayStringLine(110,"   Touch Screen Adjusting...");
-//	delay_ms(1000);	    
-	POINT_COLOR=RED;//红色
-	LCD_Clear(WHITE);  
+	ShowString(aa);    
+	POINT_COLOR=RED;//红色 
 	drow_touch_point(20,20);//画点1 
 	Pen_Point.Key_Sta=Key_Up;//消除触发信号 
 	Pen_Point.xfac=0;//xfac用来标记是否校准过,所以校准之前必须清掉!以免错误	 
@@ -591,9 +626,11 @@ void touch_adjust(void)
 					
 					POINT_COLOR=BLUE;
 					LCD_Clear(WHITE);
-					LCD_DisplayStringLine(110,"   Touch Screen Adjust OK!");
-			//		delay_ms(1800);
-					LCD_Clear(WHITE);  
+					ShowString(bb); 
+					Delay(0xfffff);
+					Delay(0xfffff);
+					Delay(0xfffff); 
+					Delay(0xfffff); 
 				//	save_adjdata();
 					return;//校正完成				 
 			}

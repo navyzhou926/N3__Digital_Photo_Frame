@@ -13,6 +13,10 @@
 
 
 extern void ShowSpecialEffect(void);
-
+extern void ShowString(char table[]);
+extern void ShowString(char table[]);
+extern void CenterOut(void);
+extern char aa[];
+extern char bb[];
 
 #endif /* __BAIMING_H */

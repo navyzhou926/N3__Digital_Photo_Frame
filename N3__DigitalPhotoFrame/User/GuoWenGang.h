@@ -13,6 +13,8 @@
 
 
 extern void DisplayDownUp(void);
-
+extern void ShowCircle(void);
+extern void ShowSpecial2(void);
+extern void DisplayCorner(void);
 
 #endif /* __GUOWENGANG_H */

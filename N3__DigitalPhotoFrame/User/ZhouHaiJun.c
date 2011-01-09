@@ -18,6 +18,7 @@
 
 extern const unsigned char home_picture[];
 extern void WindowBlinds(void);
+extern void Shdow(void);
 extern void LCD_WriteRAM(unsigned int val);
 extern void address_set(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2);
 extern void SystemInit (void);
@@ -26,6 +27,8 @@ extern u8 Read_Ads7846(void);
 extern void delay_ms(u16 nms);
 extern void delay_us(u32 Nus);
 void RandPicture(void);
+void big_liu(void);
+void small_liu(void);
 extern const unsigned char girl_1[];
 extern const unsigned char girl_2[];
 extern unsigned char _it1;
@@ -34,7 +37,7 @@ extern unsigned int X,Y;
 
 void Delay(vu32 Time);
 
-int count = 0;
+int count = 8;
 int flag = 0;
 
 unsigned char TxBuf[10]  = " \r\n";
@@ -260,7 +263,7 @@ void touch(void)
   	unsigned char a = 0;  						   
 	if(_it1 == 1)
 	{
-		delay_ms(10);
+		delay_ms(8);
 		a = GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_6);
 		if(a == 0)
 		{
@@ -273,7 +276,7 @@ void touch(void)
 				_it1 = 0;
 				RandPicture();
 		//		count++;
-		//		if (count == 5)
+		//		if (count == 9)
 		//			count = 1;
 				flag = 1;	
 				break;
@@ -297,7 +300,7 @@ void touch(void)
 *******************************************************************************/
 void RandPicture(void)
 {
-	count = rand()%5 + 1;	
+	count = rand()%9 + 1;	
 }
 
 /*******************************************************************************
@@ -312,13 +315,18 @@ void RandPicture(void)
 void perform(void)
 {	
 	char RX_data = 0;
-	int RX_status = 0;
-	count = 0;	
+	int RX_status = 0;	
 	
 	GPIO_Configuration();
 	USART1_Config();
-	Show_home_picture();
 	USART_PrintWelcomeMeun();
+	
+	LCD_Clear(Red);
+	Delay(0xbffff);
+	ShowSpecialEffect();
+
+	USART_PrintWelcomeMeun();
+	
 	while (1)									  
 	{
 		RX_status = USART_GetFlagStatus(USART1, USART_FLAG_RXNE);		
@@ -333,7 +341,7 @@ void perform(void)
 				case '1':
 				{
 					count++;
-					if(count == 6) 
+					if(count == 10) 
 						count = 1;										
 					break;	
 				}
@@ -341,13 +349,14 @@ void perform(void)
 				{
 					count--;
 					if(count == 0) 
-						count = 5;					
+						count = 9;					
 					break;
 				}
 				case ESC:
 				{
 				 	RX_data = 0;
-					count = 0;					
+					count = 0;
+					flag = 1;					
 					break;
 				}
 				default :
@@ -386,7 +395,8 @@ void perform(void)
 				if (flag == 1)
 				{
 					LED_Light(2);
-					ShowPicture1();
+					Shdow();
+//					ShowPicture1();
 					flag = 0; 	
 				}  			
 				break;	
@@ -396,6 +406,7 @@ void perform(void)
  				if (flag == 1)
 				{
 					LED_Light(3);
+			//		CenterOut();
 					ShowSpecialEffect();
 					flag = 0; 	
 				} 
@@ -416,7 +427,49 @@ void perform(void)
  				if (flag == 1)
 				{
 					LED_Light(6);
-					DisplayDownUp();
+				//	ShowCircle();
+				//	DisplayDownUp();
+				    ShowSpecial2();
+					flag = 0; 	
+				} 
+				break;	
+			}
+			case 6: 
+			{
+ 				if (flag == 1)
+				{
+					LED_Light(5);
+					big_liu();
+					flag = 0; 	
+				} 
+				break;	
+			}
+			case 7: 
+			{
+ 				if (flag == 1)
+				{
+					LED_Light(6);
+					small_liu();
+					flag = 0; 	
+				} 
+				break;	
+			}
+			case 8: 
+			{
+ 				if (flag == 1)
+				{
+					LED_Light(5);
+					DisplayCorner();
+					flag = 0; 	
+				} 
+				break;	
+			}
+			case 9: 
+			{
+ 				if (flag == 1)
+				{
+					LED_Light(6);
+					ShowSpecialEffect();
 					flag = 0; 	
 				} 
 				break;	

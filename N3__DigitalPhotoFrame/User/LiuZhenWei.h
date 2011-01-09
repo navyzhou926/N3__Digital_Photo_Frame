@@ -25,5 +25,6 @@
 void  Delay (u32 nCount);
 void LED_Light(u32 i);
 void WindowBlinds(void);
+void Shdow(void);
 
 #endif /* __LIUZHENWEI_H */

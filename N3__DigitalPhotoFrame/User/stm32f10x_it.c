@@ -262,7 +262,7 @@ void EXTI2_IRQHandler(void)
 			RandPicture();
 			flag = 1;
 		//	count++;
-		//	if (count == 5)
+		//	if (count == 10)
 		//	{
 		//		count = 1;
 		//	}
@@ -479,7 +479,7 @@ void EXTI9_5_IRQHandler(void)
 		Pen_Point.Key_Sta=Key_Down;//°´¼ü°´ÏÂ
 		_it1=1;
 	    EXTI_ClearITPendingBit(EXTI_Line6);
-		flag = 1;
+//		flag = 1;
 	}
 }
 
@@ -543,7 +543,7 @@ void TIM2_IRQHandler(void)
 		RandPicture();
 		flag = 1;				
 //		count++;
-//		if (count == 5)
+//		if (count == 10)
 //		{
 //			count = 1;
 //		}

@@ -31,4 +31,5 @@
 .\Obj\touch.o: .\FWlib\inc\stm32f10x_tim.h
 .\Obj\touch.o: .\FWlib\inc\stm32f10x_usart.h
 .\Obj\touch.o: .\FWlib\inc\stm32f10x_wwdg.h
+.\Obj\touch.o: User\BaiMing.h
 .\Obj\touch.o: User\ZhouHaiJun.h
