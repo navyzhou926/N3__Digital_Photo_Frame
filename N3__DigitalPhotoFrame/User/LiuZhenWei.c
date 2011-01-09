@@ -208,9 +208,7 @@ void big_liu(void)
 			LCD_WriteRAM(dd);
 			LCD_WriteRAM(dd);
 			t += 2;
-
-		}
-				
+		}				
 	} 
 //	Delay(0xaffff);
 //	Delay(0xaffff);

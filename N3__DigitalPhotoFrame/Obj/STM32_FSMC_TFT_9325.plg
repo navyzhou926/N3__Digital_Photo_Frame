@@ -7,3 +7,9 @@ D:\ARM-Cortex-Training\STM32-Broad\Ð¾´ïSTM32ÅäÌ×Àý³Ì\¸´¼þ (2) N3__DigitalPhotoFr
 Project File Date:  01/08/2011
 
 <h2>Output:</h2>
+Build target 'STM32_FSMC_TFT_9325'
+compiling LiuZhenWei.c...
+linking...
+Program Size: Code=25722 RO-data=467294 RW-data=476 ZI-data=2412  
+FromELF: creating hex file...
+".\Obj\STM32_FSMC_TFT_9325.axf" - 0 Error(s), 0 Warning(s).
